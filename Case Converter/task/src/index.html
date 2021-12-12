@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div class="title">Case Converter</div>
+<textarea name="text" id="text" cols="30" rows="10"></textarea><br>
+<button onclick="myUpperCase()" id="upper-case">Upper Case</button>
+<button onclick="myLowerCase()" id="lower-case">Lower Case</button>
+<button onclick="myProperCase()" id="proper-case">Proper Case</button>
+<button onclick="mySentenceCase()" id="sentence-case">Sentence Case</button>
+<button onclick="mySaveToFile()" id="save-text-file">Save To File</button>
+<script>
+    function download(filename, text) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    function myLowerCase () {
+        let buf = document.getElementById('text').value;
+        document.getElementById('text').value = buf.toLowerCase();
+        console.log('updated to lower case');
+    }
+    function myUpperCase () {
+        let buf = document.getElementById('text').value;
+        document.getElementById('text').value = buf.toUpperCase();
+        console.log('updated to upper case');
+    }
+    function myProperCase () {
+        let buf = document.getElementById('text').value;
+        const words =buf.split(' ');
+        for (let i=0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+        }
+        document.getElementById('text').value = words.join(' ');
+        console.log('updated to proper case');
+    }
+    function mySentenceCase () {
+        let buf = document.getElementById('text').value.toLowerCase();
+        const words = buf.split(' ');
+
+        // here must be Capitalizing the every first letter of every sentence
+        words[0] = words[0][0].toUpperCase() + words[0].substr(1);
+        //console.log('Start length=', words.length);
+        for (let i=0; i < words.length; i++) {
+             if (words[i].endsWith('.') && i != (words.length-1))  {
+                //console.log(i);
+                 words[i+1] = words[i+1][0].toUpperCase() + words[i+1].substr(1);
+            }
+        }
+        //console.log('End length=', words.length);
+        document.getElementById('text').value = words.join(' ');
+        console.log('updated to sentence case');
+    }
+    function mySaveToFile() {
+        download('text.txt', document.getElementById('text').value);
+    }
+</script>
+</body>
+</html>
